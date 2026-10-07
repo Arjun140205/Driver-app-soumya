@@ -1,12 +1,9 @@
 package com.examly.springapp.exceptions;
 
-import com.examly.springapp.dto.ErrorLogDTO;
-import com.examly.springapp.mapper.DtoMapper;
-import com.examly.springapp.repository.ErrorLogRepo;
+import com.examly.springapp.service.ErrorLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +27,11 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @Autowired
-    private ErrorLogRepo errorLogRepo;
+    private final ErrorLogService errorLogService;
+
+    public GlobalExceptionHandler(ErrorLogService errorLogService) {
+        this.errorLogService = errorLogService;
+    }
 
     @ExceptionHandler({DriverDeletionException.class, DriverRequestDeletionException.class, DuplicateDriverException.class})
     public ResponseEntity<Map<String, Object>> handleConflict(RuntimeException ex, HttpServletRequest request) {
@@ -90,15 +90,18 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<Map<String, Object>> respond(HttpStatusCode status, Exception ex, String message, HttpServletRequest request) {
-        log.error("{} {} -> {}: {}", request.getMethod(), request.getRequestURI(), ex.getClass().getSimpleName(), ex.getMessage());
+        log.error("{} {} -> {}", request.getMethod(), request.getRequestURI(), ex.getClass().getSimpleName());
         try {
-            ErrorLogDTO errorLog = new ErrorLogDTO(status.value(), ex.getClass().getName(), ex.getMessage(), request.getRequestURI());
-            errorLogRepo.save(DtoMapper.toEntity(errorLog));
+            String safeMessage = status.is5xxServerError() ? "Unexpected server error" : message;
+            errorLogService.record(status.value(), ex.getClass().getName(), safeMessage, request.getRequestURI());
         } catch (Exception loggingFailure) {
-            log.warn("Could not store the error log: {}", loggingFailure.getMessage());
+            log.warn("Could not persist error log of type {}", loggingFailure.getClass().getSimpleName());
         }
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("message", message == null ? "Unexpected error" : message);
+        body.put("status", status.value());
+        body.put("message", status.is5xxServerError() ? "Something went wrong. Please try again later." : (message == null ? "Unexpected error" : message));
+        body.put("timestamp", java.time.Instant.now().toString());
+        body.put("path", request.getRequestURI());
         return ResponseEntity.status(status).body(body);
     }
 }

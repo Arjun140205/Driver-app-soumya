@@ -21,6 +21,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { HttpErrorInterceptor } from './services/http-error.interceptor';
 import { AuthService } from './services/auth.service';
 
@@ -42,7 +43,8 @@ import { AuthService } from './services/auth.service';
     ErrorComponent,
     HomePageComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

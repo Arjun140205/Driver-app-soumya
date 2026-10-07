@@ -4,7 +4,6 @@ import com.examly.springapp.dto.FeedbackDTO;
 import com.examly.springapp.mapper.DtoMapper;
 import com.examly.springapp.model.Feedback;
 import com.examly.springapp.repository.FeedbackRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,11 +13,13 @@ import java.util.Optional;
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
 
-    @Autowired
-    private FeedbackRepo feedbackRepo;
+    private final FeedbackRepo feedbackRepo;
+    private final AiService aiService;
 
-    @Autowired
-    private AiService aiService;
+    public FeedbackServiceImpl(FeedbackRepo feedbackRepo, AiService aiService) {
+        this.feedbackRepo = feedbackRepo;
+        this.aiService = aiService;
+    }
 
     @Override
     public FeedbackDTO createFeedback(FeedbackDTO feedbackDto) {

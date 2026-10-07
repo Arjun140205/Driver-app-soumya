@@ -6,7 +6,7 @@ export interface DriverRequest {
   userId: number;
   driverId?: number;
   requestDate: Date; // ISO Date format (YYYY-MM-DD)
-  status: string; // "Pending", "Approved", "Rejected", "Trip End", "Closed"
+  status: string; // "Pending", "Approved", "Rejected", "Trip End", "Closed", "Cancelled"
   tripDate: Date; // ISO Date format (YYYY-MM-DD)
   timeSlot: Date; // Time as a Date object (compatible with LocalTime)
   pickupLocation: string;

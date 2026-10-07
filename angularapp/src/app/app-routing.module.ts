@@ -16,6 +16,7 @@ import { CustomerviewrequestedComponent } from './components/customerviewrequest
 import { CustomerpostfeedbackComponent } from './components/customerpostfeedback/customerpostfeedback.component';
 import { CustomerviewfeedbackComponent } from './components/customerviewfeedback/customerviewfeedback.component';
 import { ErrorComponent } from './components/error/error.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const routes: Routes = [
   // The login page is the first page rendered when the application loads.
@@ -25,6 +26,7 @@ const routes: Routes = [
 
   // Common (Admin and Customer)
   { path: 'home', component: HomePageComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
 
   // Admin
   { path: 'driver-management', component: DriverManagementComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },

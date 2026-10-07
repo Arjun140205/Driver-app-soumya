@@ -3,7 +3,6 @@ package com.examly.springapp.controller;
 import com.examly.springapp.dto.DriverRequestDTO;
 import com.examly.springapp.dto.validation.OnCreate;
 import com.examly.springapp.service.DriverRequestService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,8 +15,11 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class DriverRequestController {
 
-    @Autowired
-    private DriverRequestService driverRequestService;
+    private final DriverRequestService driverRequestService;
+
+    public DriverRequestController(DriverRequestService driverRequestService) {
+        this.driverRequestService = driverRequestService;
+    }
 
     @PostMapping("/driverRequest")
     public ResponseEntity<DriverRequestDTO> addDriverRequest(@Validated(OnCreate.class) @RequestBody DriverRequestDTO driverRequest) {

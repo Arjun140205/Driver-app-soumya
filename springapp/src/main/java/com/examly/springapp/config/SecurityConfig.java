@@ -1,6 +1,5 @@
 package com.examly.springapp.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,17 +20,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity   // switches on @PreAuthorize (used by AdminController)
 public class SecurityConfig {
 
-    @Autowired
-    private MyUserDetailsService userDetailsService;
+    private final MyUserDetailsService userDetailsService;
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+    private final JwtAccessDeniedHandler accessDeniedHandler;
+    private final JwtUtils jwtUtils;
 
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
-
-    @Autowired
-    private JwtAccessDeniedHandler accessDeniedHandler;
-
-    @Autowired
-    private JwtUtils jwtUtils;
+    public SecurityConfig(MyUserDetailsService userDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler,
+            JwtAccessDeniedHandler accessDeniedHandler, JwtUtils jwtUtils) {
+        this.userDetailsService = userDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.jwtUtils = jwtUtils;
+    }
 
     @Bean
     public JwtAuthenticationFilter authenticationJwtTokenFilter() {

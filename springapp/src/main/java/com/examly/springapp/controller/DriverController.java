@@ -3,7 +3,6 @@ package com.examly.springapp.controller;
 import com.examly.springapp.dto.DriverDTO;
 import com.examly.springapp.dto.validation.OnCreate;
 import com.examly.springapp.service.DriverService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,17 +16,16 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class DriverController {
 
-    @Autowired
-    private DriverService driverService;
+    private final DriverService driverService;
+
+    public DriverController(DriverService driverService) {
+        this.driverService = driverService;
+    }
 
     @PostMapping("/driver")
     public ResponseEntity<DriverDTO> addDriver(@Validated(OnCreate.class) @RequestBody DriverDTO driver) {
-        try {
-            DriverDTO savedDriver = driverService.addDriver(driver);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedDriver);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        DriverDTO savedDriver = driverService.addDriver(driver);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedDriver);
     }
 
     @GetMapping("/driver/{driverId}")

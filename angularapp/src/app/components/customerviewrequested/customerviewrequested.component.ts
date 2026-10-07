@@ -192,11 +192,12 @@ export class CustomerviewrequestedComponent implements OnInit, OnDestroy {
   }
 
   /** The "Write a Review" button on the request card (enabled for the same requests as "Fetch Pay Amount"). */
-  writeReview(request: DriverRequest): void {
-    if (!this.canFetchPayAmount(request)) {
+  writeReview(request?: DriverRequest): void {
+    const reviewRequest = request || this.selectedRequest;
+    if (!reviewRequest || !this.canFetchPayAmount(reviewRequest)) {
       return;
     }
-    const driverId = request.driver?.driverId;
+    const driverId = reviewRequest.driver?.driverId;
     this.router.navigate(['/customerpostfeedback'], { queryParams: driverId !== undefined ? { driverId } : {} });
   }
 

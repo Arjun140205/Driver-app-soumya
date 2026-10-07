@@ -11,13 +11,17 @@ public class ErrorLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long errorLogId;
 
+    @Column(nullable = false)
     private LocalDateTime loggedAt;
+    @Column(nullable = false)
     private int status;
+    @Column(nullable = false)
     private String exceptionType;
 
     @Column(length = 1000)
     private String message;
 
+    @Column(length = 512)
     private String path;
 
     public ErrorLog() {
@@ -29,6 +33,11 @@ public class ErrorLog {
         this.exceptionType = exceptionType;
         this.message = message != null && message.length() > 1000 ? message.substring(0, 1000) : message;
         this.path = path;
+    }
+
+    @PrePersist
+    void ensureLoggedAt() {
+        if (loggedAt == null) loggedAt = LocalDateTime.now();
     }
 
     public Long getErrorLogId() {

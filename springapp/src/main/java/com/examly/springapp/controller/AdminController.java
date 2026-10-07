@@ -3,7 +3,6 @@ package com.examly.springapp.controller;
 import com.examly.springapp.dto.UserDTO;
 import com.examly.springapp.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,8 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
 
     /** Lets a logged-in admin create another admin. */
     @PostMapping("/register")

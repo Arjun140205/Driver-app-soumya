@@ -4,7 +4,6 @@ import com.examly.springapp.dto.UserDTO;
 import com.examly.springapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,8 +19,7 @@ public class AdminSeeder implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(AdminSeeder.class);
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Value("${app.admin.username:admin}")
     private String username;
@@ -34,6 +32,10 @@ public class AdminSeeder implements CommandLineRunner {
 
     @Value("${app.admin.password:Admin@123}")
     private String password;
+
+    public AdminSeeder(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void run(String... args) {

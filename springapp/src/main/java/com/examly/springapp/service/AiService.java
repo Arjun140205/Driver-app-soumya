@@ -8,7 +8,6 @@ import com.examly.springapp.repository.DriverRepo;
 import com.examly.springapp.repository.FeedbackRepo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -49,14 +48,15 @@ public class AiService {
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<String, float[]> embeddingCache = new ConcurrentHashMap<>();
 
-    @Autowired
-    private GeminiService geminiService;
+    private final GeminiService geminiService;
+    private final DriverRepo driverRepo;
+    private final FeedbackRepo feedbackRepo;
 
-    @Autowired
-    private DriverRepo driverRepo;
-
-    @Autowired
-    private FeedbackRepo feedbackRepo;
+    public AiService(GeminiService geminiService, DriverRepo driverRepo, FeedbackRepo feedbackRepo) {
+        this.geminiService = geminiService;
+        this.driverRepo = driverRepo;
+        this.feedbackRepo = feedbackRepo;
+    }
 
     // ------------------------------------------------------------------ semantic driver search
 

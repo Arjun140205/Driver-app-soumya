@@ -9,7 +9,6 @@ import com.examly.springapp.model.Roles;
 import com.examly.springapp.model.User;
 import com.examly.springapp.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,14 +23,15 @@ import java.util.Map;
 @RequestMapping("/api")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final JwtUtils jwtUtils;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private JwtUtils jwtUtils;
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtils jwtUtils) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.jwtUtils = jwtUtils;
+    }
 
     /**
      * Public sign-up: customers only. The body is validated (@Valid), the e-mail and mobile number

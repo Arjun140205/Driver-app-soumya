@@ -5,7 +5,6 @@ import com.examly.springapp.dto.MobileOtpDTO;
 import com.examly.springapp.dto.validation.OnVerify;
 import com.examly.springapp.service.OtpService;
 import com.examly.springapp.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,11 +22,13 @@ import java.util.Map;
 @RequestMapping("/api/otp")
 public class OtpController {
 
-    @Autowired
-    private OtpService otpService;
+    private final OtpService otpService;
+    private final UserService userService;
 
-    @Autowired
-    private UserService userService;
+    public OtpController(OtpService otpService, UserService userService) {
+        this.otpService = otpService;
+        this.userService = userService;
+    }
 
     @PostMapping("/email/send")
     public ResponseEntity<?> sendEmailOtp(@Valid @RequestBody EmailOtpDTO request) {

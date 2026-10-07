@@ -1,0 +1,11 @@
+.profile-card { max-width: 620px; margin: 28px auto; }
+.profile-details { text-align: center; }
+.profile-avatar { margin: 12px auto; width: 76px; height: 76px; display: grid; place-items: center; border-radius: 50%; background: #1d8a8a; color: #fff; font-size: 30px; }
+.profile-details h3 { margin: 8px 0 24px; }
+.profile-details dl { text-align: left; margin: 0; }
+.profile-details dl div { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid #e6e9ec; padding: 13px 2px; }
+.profile-details dt { color: #68727c; }
+.profile-details dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.profile-skeleton span { display: block; height: 18px; margin: 18px 0; border-radius: 8px; background: linear-gradient(90deg,#edf0f2,#f8f9fa,#edf0f2); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
+.profile-error { color: #b42318; }
+@keyframes shimmer { to { background-position: -200% 0; } }

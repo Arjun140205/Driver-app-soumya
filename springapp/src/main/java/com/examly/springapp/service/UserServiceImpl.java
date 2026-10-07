@@ -6,27 +6,26 @@ import com.examly.springapp.mapper.DtoMapper;
 import com.examly.springapp.model.Roles;
 import com.examly.springapp.model.User;
 import com.examly.springapp.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+    private final PasswordEncoder encoder;
+    private final OtpService otpService;
+    private final boolean otpRequired;
 
-    @Autowired
-    private PasswordEncoder encoder;
-
-    @Autowired
-    private OtpService otpService;
-
-    @Value("${otp.verification-required:true}")
-    private boolean otpRequired;
+    public UserServiceImpl(UserRepo userRepo, PasswordEncoder encoder, OtpService otpService,
+            @Value("${otp.verification-required:true}") boolean otpRequired) {
+        this.userRepo = userRepo;
+        this.encoder = encoder;
+        this.otpService = otpService;
+        this.otpRequired = otpRequired;
+    }
 
     @Override
     public UserDTO createUser(UserDTO userDto) {
@@ -72,7 +71,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO loginUser(UserDTO userDto) {
         // Will be handled via Spring Security and JwtUtils in AuthController
-        Optional<User> user = userRepo.findByEmail(userDto.getEmail());
-        return user.map(DtoMapper::toDTO).orElse(null);
+        return userRepo.findByEmail(userDto.getEmail()).map(DtoMapper::toDTO).orElse(null);
     }
 }

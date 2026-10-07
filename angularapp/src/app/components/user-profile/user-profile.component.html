@@ -1,0 +1,17 @@
+<div class="page-container narrow">
+  <section class="page-card profile-card">
+    <h2 class="page-title steel">My Profile</h2>
+    <div class="profile-skeleton" *ngIf="loading" aria-label="Loading profile"><span></span><span></span><span></span></div>
+    <p class="profile-error" *ngIf="!loading && error" role="alert">{{ error }}</p>
+    <div class="profile-details" *ngIf="!loading && profile">
+      <div class="profile-avatar" aria-hidden="true">{{ profile.username.charAt(0).toUpperCase() }}</div>
+      <h3>{{ profile.username }}</h3>
+      <dl>
+        <div><dt>Name</dt><dd>{{ profile.username }}</dd></div>
+        <div><dt>Email</dt><dd>{{ profile.email }}</dd></div>
+        <div><dt>Phone</dt><dd>{{ profile.mobileNumber }}</dd></div>
+        <div><dt>Role</dt><dd>{{ profile.userRole }}</dd></div>
+      </dl>
+    </div>
+  </section>
+</div>

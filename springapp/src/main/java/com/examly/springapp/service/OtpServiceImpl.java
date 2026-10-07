@@ -3,7 +3,6 @@ package com.examly.springapp.service;
 import com.examly.springapp.exceptions.OtpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,11 +33,8 @@ public class OtpServiceImpl implements OtpService {
     private static final String EMAIL = "EMAIL";
     private static final String MOBILE = "MOBILE";
 
-    @Autowired
-    private EmailOtpSender emailSender;
-
-    @Autowired
-    private SmsOtpSender smsSender;
+    private final EmailOtpSender emailSender;
+    private final SmsOtpSender smsSender;
 
     @Value("${otp.expiry-minutes:5}")
     private long expiryMinutes;
@@ -54,6 +50,11 @@ public class OtpServiceImpl implements OtpService {
 
     @Value("${otp.dev-mode:true}")
     private boolean devMode;
+
+    public OtpServiceImpl(EmailOtpSender emailSender, SmsOtpSender smsSender) {
+        this.emailSender = emailSender;
+        this.smsSender = smsSender;
+    }
 
     /** OTPs that were sent but not verified yet. */
     private final Map<String, PendingOtp> pending = new HashMap<>();

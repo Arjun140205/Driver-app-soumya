@@ -6,7 +6,6 @@ import com.examly.springapp.exceptions.DuplicateDriverException;
 import com.examly.springapp.mapper.DtoMapper;
 import com.examly.springapp.model.Driver;
 import com.examly.springapp.repository.DriverRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +14,15 @@ import java.util.Optional;
 @Service
 public class DriverServiceImpl implements DriverService {
 
-    @Autowired
-    private DriverRepo driverRepo;
+    private final DriverRepo driverRepo;
+
+    public DriverServiceImpl(DriverRepo driverRepo) {
+        this.driverRepo = driverRepo;
+    }
 
     @Override
     public DriverDTO addDriver(DriverDTO driverDto) {
-        Optional<Driver> existingDriver = driverRepo.findByLicenseNumber(driverDto.getLicenseNumber());
-        if (existingDriver.isPresent()) {
+        if (driverRepo.existsByLicenseNumber(driverDto.getLicenseNumber())) {
             throw new DuplicateDriverException("Driver with license number " + driverDto.getLicenseNumber() + " already exists.");
         }
         Driver driver = DtoMapper.toEntity(driverDto);
