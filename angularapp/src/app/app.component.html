@@ -1,0 +1,3 @@
+<app-adminnav *ngIf="isAdmin$ | async"></app-adminnav>
+<app-customernav *ngIf="isCustomer$ | async"></app-customernav>
+<router-outlet></router-outlet>

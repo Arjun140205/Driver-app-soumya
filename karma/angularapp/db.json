@@ -1,0 +1,38 @@
+{
+  "trains": [
+    {
+      "id": 1,
+      "trainName": "Express 101",
+      "trainNumber": "EX101",
+      "operator": "Indian Railways",
+      "source": "City A",
+      "destination": "City B",
+      "trainType": "Superfast",
+      "totalCoaches": 12,
+      "pantryAvailable": true
+    },
+    {
+      "id": 2,
+      "trainName": "Mail 202",
+      "trainNumber": "ML202",
+      "operator": "Southern Railways",
+      "source": "City X",
+      "destination": "City Y",
+      "trainType": "Mail",
+      "totalCoaches": 10,
+      "pantryAvailable": false
+    },
+    {
+      "id": 3,
+      "trainName": "Local 303",
+      "trainNumber": "LC303",
+      "operator": "Metro Rail",
+      "source": "Station A",
+      "destination": "Station Z",
+      "trainType": "Local",
+      "totalCoaches": 8,
+      "pantryAvailable": false
+    }
+    
+  ]
+}

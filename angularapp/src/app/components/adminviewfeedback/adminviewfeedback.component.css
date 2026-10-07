@@ -1,0 +1,23 @@
+.toolbar.centered { justify-content: center; gap: 22px; }
+.actions { white-space: nowrap; }
+.actions .btn { margin: 2px 2px; font-size: 12px; }
+
+.badge { display: inline-block; padding: 3px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; color: #fff; }
+.badge.positive { background: #2fa84f; }
+.badge.neutral { background: #8a8f98; }
+.badge.negative { background: #d9363e; }
+.tags { margin-top: 4px; }
+.tag { display: inline-block; margin: 1px 2px; padding: 1px 8px; border-radius: 999px; background: #ece8fb; color: #5a45c8; font-size: 10px; }
+
+.left-box { text-align: left; min-width: 330px; max-width: 420px; }
+.left-box h3.small { margin-bottom: 12px; font-size: 15px; }
+.left-box p { margin: 6px 0; font-size: 13px; }
+.left-box .modal-actions { margin-top: 14px; }
+.driver-box { max-width: 440px; }
+
+.ai-panel { margin-top: 14px; padding: 12px 14px; background: #f1ecfd; border-radius: 6px; font-size: 13px; }
+.ai-title { margin-bottom: 4px; font-weight: 700; color: #5a45c8; }
+.ai-meta { font-size: 12px; color: #444; }
+.ai-text { margin: 8px 0 !important; line-height: 1.5; }
+.ai-panel ul { margin: 4px 0 8px 18px; padding: 0; }
+.spinner.small { width: 20px; height: 20px; margin: 6px 0; }

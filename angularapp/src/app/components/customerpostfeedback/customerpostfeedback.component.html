@@ -1,0 +1,36 @@
+<form class="form-card" id="feedbackForm" [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" novalidate>
+  <button type="button" class="back-btn" id="backButton" (click)="goBack()">Back</button>
+  <h2 class="form-title" id="formHeading">Submit Feedback</h2>
+
+  <label class="form-label" for="category">Category<span class="req">*</span></label>
+  <select id="category" class="form-control" formControlName="category">
+    <option value="">Select a category</option>
+    <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+  </select>
+  <div class="error-text" id="categoryError" *ngIf="showError('category')">*Category is required</div>
+
+  <label class="form-label">Rating<span class="req">*</span></label>
+  <div class="stars" id="rating">
+    <button type="button" class="star" *ngFor="let star of stars" [id]="'star-' + star" [class.on]="star <= f['rating'].value" (click)="setRating(star)" [attr.aria-label]="star + ' star'">&#9733;</button>
+  </div>
+  <div class="error-text" id="ratingError" *ngIf="showError('rating')">*Rating is required</div>
+
+  <label class="form-label" for="feedbackText">Feedback<span class="req">*</span></label>
+  <textarea id="feedbackText" class="form-control" rows="4" formControlName="feedbackText" placeholder="Tell us about your trip..."></textarea>
+  <div class="error-text" id="feedbackTextError" *ngIf="showError('feedbackText')">*Feedback is required</div>
+
+  <div class="form-error" id="formError" *ngIf="formError">{{ formError }}</div>
+
+  <div class="submit-row">
+    <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+  </div>
+</form>
+
+<div class="modal-backdrop" *ngIf="showSuccessPopup">
+  <div class="modal-box success-box" id="successPopup">
+    <p>Thank you for your feedback!</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-primary" id="successOk" (click)="closeSuccessPopup()">Ok</button>
+    </div>
+  </div>
+</div>

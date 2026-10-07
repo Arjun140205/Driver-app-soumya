@@ -1,0 +1,40 @@
+/* Layout of the two-panel auth card is shared with the login page (see styles.css). */
+:host { display: block; }
+
+/* input + "Send OTP" button on one line */
+.verify-row { display: flex; align-items: flex-end; gap: 8px; }
+.verify-row .auth-input { flex: 1; min-width: 0; }
+.verify-row .auth-input[readonly] { color: #555; }
+
+.otp-btn {
+  flex: 0 0 auto;
+  min-width: 88px;
+  padding: 6px 10px;
+  border: 1px solid #0a6fe8;
+  border-radius: 4px;
+  background: #fff;
+  color: #0a6fe8;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.otp-btn:hover:not(:disabled) { background: #0a6fe8; color: #fff; }
+.otp-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.otp-btn.verify-btn { background: #0a6fe8; color: #fff; }
+.otp-btn.verify-btn:hover:not(:disabled) { background: #0958bd; }
+
+.change-btn { flex: 0 0 auto; border: none; background: none; color: #0a6fe8; font-size: 11.5px; font-weight: 700; cursor: pointer; text-decoration: underline; }
+
+/* the box that appears after the OTP was sent */
+.otp-box { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding: 8px; background: #f3f8ff; border: 1px dashed #8bb8ee; border-radius: 4px; }
+.otp-input { flex: 1; min-width: 0; padding: 6px 8px; border: 1px solid #c9d6e6; border-radius: 4px; background: #fff; font-size: 14px; letter-spacing: 3px; text-align: center; }
+.otp-input:focus { outline: none; border-color: #0a6fe8; }
+
+.otp-info { margin: 4px 0 2px; font-size: 11px; color: #555; }
+.verified-text { margin: 4px 0 2px; font-size: 12px; font-weight: 700; color: #1b8a3a; }
+
+/* password checklist */
+.pw-rules { list-style: none; margin: 6px 0 2px; padding: 6px 8px; background: #f7f7f7; border-radius: 4px; }
+.pw-rules li { font-size: 11px; color: #777; line-height: 1.6; }
+.pw-rules li.met { color: #1b8a3a; }

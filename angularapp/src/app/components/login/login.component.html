@@ -1,0 +1,38 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-image">
+      <h1 class="auth-heading">DriveU</h1>
+    </div>
+
+    <div class="auth-panel">
+      <form class="auth-form" id="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <h2>Log In</h2>
+
+        <div class="auth-field">
+          <input type="email" id="email" class="auth-input" placeholder="Email" formControlName="email" autocomplete="username" />
+          <div class="auth-error" id="emailError" *ngIf="isInvalid('email')">
+            <span *ngIf="email.errors?.['required']">Email address is required</span>
+            <span *ngIf="!email.errors?.['required'] && email.errors?.['pattern']">Please enter a valid email address</span>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <div class="password-wrap">
+            <input [type]="showPassword ? 'text' : 'password'" id="password" class="auth-input" placeholder="Password" formControlName="password" autocomplete="current-password" />
+            <button type="button" class="eye-btn" id="togglePassword" (click)="togglePassword()" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">&#128065;</button>
+          </div>
+          <div class="auth-error" id="passwordError" *ngIf="isInvalid('password')">
+            <span *ngIf="password.errors?.['required']">Password is required</span>
+            <span *ngIf="!password.errors?.['required'] && password.errors?.['minlength']">Password must be at least 6 characters long</span>
+          </div>
+        </div>
+
+        <div class="server-error" id="loginError" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+        <button type="submit" class="auth-submit" id="loginButton">Log In</button>
+
+        <p class="auth-link">Don't have an account? <a routerLink="/signup" id="signupLink">Sign Up</a></p>
+      </form>
+    </div>
+  </div>
+</div>

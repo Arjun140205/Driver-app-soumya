@@ -1,0 +1,3 @@
+/* Navbar look is shared with the customer navbar and lives in the global styles.css. */
+:host { display: block; }
+.modal-actions.row .btn { min-width: 100px; border-radius: 4px; padding: 8px 14px; }

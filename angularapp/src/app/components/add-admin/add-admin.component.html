@@ -1,0 +1,53 @@
+<form class="form-card" id="addAdminForm" [formGroup]="adminForm" (ngSubmit)="onSubmit()" novalidate>
+  <h2 class="form-title" id="formHeading">Add New Admin</h2>
+
+  <label class="form-label" for="adminUsername">User Name<span class="req">*</span></label>
+  <input type="text" id="adminUsername" class="form-control" formControlName="username" autocomplete="off" />
+  <div class="error-text" id="adminUsernameError" *ngIf="showError('username')">*Username is required</div>
+
+  <label class="form-label" for="adminEmail">Email<span class="req">*</span></label>
+  <input type="email" id="adminEmail" class="form-control" formControlName="email" autocomplete="off" />
+  <div class="error-text" id="adminEmailError" *ngIf="showError('email')">
+    <span *ngIf="f['email'].errors?.['required']">*Email is required</span>
+    <span *ngIf="!f['email'].errors?.['required']">*Please enter a valid email address</span>
+  </div>
+
+  <label class="form-label" for="adminMobile">Mobile<span class="req">*</span></label>
+  <input type="text" id="adminMobile" class="form-control" formControlName="mobileNumber" autocomplete="off" inputmode="numeric" />
+  <div class="error-text" id="adminMobileError" *ngIf="showError('mobileNumber')">
+    <span *ngIf="f['mobileNumber'].errors?.['required']">*Mobile number is required</span>
+    <span *ngIf="!f['mobileNumber'].errors?.['required']">*Mobile number must be 10 digits</span>
+  </div>
+
+  <label class="form-label" for="adminPassword">Password<span class="req">*</span></label>
+  <input type="password" id="adminPassword" class="form-control" formControlName="password" autocomplete="new-password" />
+  <div class="error-text" id="adminPasswordError" *ngIf="showError('password')">
+    <span *ngIf="f['password'].errors?.['required']">*Password is required</span>
+    <span *ngIf="!f['password'].errors?.['required']">*Password does not meet all the rules below</span>
+  </div>
+  <ul class="pw-rules" id="adminPasswordRules" *ngIf="passwordTyped">
+    <li *ngFor="let rule of passwordRules" [class.met]="ruleMet(rule)">{{ ruleMet(rule) ? '✓' : '○' }} {{ rule.text }}</li>
+  </ul>
+
+  <label class="form-label" for="adminConfirmPassword">Confirm Password<span class="req">*</span></label>
+  <input type="password" id="adminConfirmPassword" class="form-control" formControlName="confirmPassword" autocomplete="new-password" />
+  <div class="error-text" id="adminConfirmPasswordError" *ngIf="showError('confirmPassword') || (passwordMismatch && (f['confirmPassword'].touched || submitted))">
+    <span *ngIf="f['confirmPassword'].errors?.['required']">*Confirm password is required</span>
+    <span *ngIf="passwordMismatch">*Passwords do not match</span>
+  </div>
+
+  <div class="form-error" id="serverError" *ngIf="serverError">{{ serverError }}</div>
+
+  <div class="submit-row">
+    <button type="submit" class="btn btn-primary" id="addAdminButton">Add Admin</button>
+  </div>
+</form>
+
+<div class="modal-backdrop" *ngIf="showSuccessPopup">
+  <div class="modal-box success-box" id="adminAddedPopup">
+    <p>Admin Added Successfully!</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-primary" id="adminAddedOk" (click)="closeSuccessPopup()">Ok</button>
+    </div>
+  </div>
+</div>

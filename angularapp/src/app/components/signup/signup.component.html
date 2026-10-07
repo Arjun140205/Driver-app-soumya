@@ -1,0 +1,100 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-image">
+      <h1 class="auth-heading">DriveU</h1>
+    </div>
+
+    <div class="auth-panel">
+      <form class="auth-form" id="signupForm" [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+        <h2>Sign Up</h2>
+        <div class="subtitle">JOIN DRIVEU TODAY</div>
+
+        <div class="auth-field">
+          <input type="text" id="username" class="auth-input" placeholder="User name" formControlName="username" autocomplete="username" />
+          <div class="auth-error" id="usernameError" *ngIf="isInvalid('username')">Username is required</div>
+        </div>
+
+        <!-- Email + OTP -->
+        <div class="auth-field">
+          <div class="verify-row">
+            <input type="email" id="email" class="auth-input" placeholder="Email" formControlName="email" autocomplete="email" [readOnly]="otp.email.verified" />
+            <button type="button" class="otp-btn" id="sendEmailOtp" *ngIf="!otp.email.verified" [disabled]="!canSend('email')" (click)="sendOtp('email')">{{ sendLabel('email') }}</button>
+            <button type="button" class="change-btn" id="changeEmail" *ngIf="otp.email.verified" (click)="changeTarget('email')">Change</button>
+          </div>
+          <div class="auth-error" id="emailError" *ngIf="isInvalid('email')">
+            <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+            <span *ngIf="!f['email'].errors?.['required'] && f['email'].errors?.['pattern']">Please enter a valid email address</span>
+          </div>
+
+          <div class="otp-box" id="emailOtpBox" *ngIf="otp.email.sent && !otp.email.verified">
+            <input type="text" id="emailOtp" class="otp-input" placeholder="Enter 6 digit OTP" maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+                   [(ngModel)]="otp.email.code" [ngModelOptions]="{ standalone: true }" (keyup.enter)="verifyOtp('email')" />
+            <button type="button" class="otp-btn verify-btn" id="verifyEmailOtp" [disabled]="otp.email.verifying || !otpFormatOk('email')" (click)="verifyOtp('email')">{{ otp.email.verifying ? 'Verifying...' : 'Verify' }}</button>
+          </div>
+          <div class="otp-info" id="emailOtpInfo" *ngIf="otp.email.message && !otp.email.verified">{{ otp.email.message }}</div>
+          <div class="auth-error" id="emailOtpError" *ngIf="otp.email.error">{{ otp.email.error }}</div>
+          <div class="verified-text" id="emailVerified" *ngIf="otp.email.verified">✔ Verified</div>
+          <div class="auth-error" id="emailNotVerified" *ngIf="submitted && f['email'].valid && !otp.email.verified">Please verify your email with the OTP</div>
+        </div>
+
+        <!-- Mobile + OTP -->
+        <div class="auth-field">
+          <div class="verify-row">
+            <input type="text" id="mobileNumber" class="auth-input" placeholder="Mobile" formControlName="mobileNumber" autocomplete="tel" inputmode="numeric" [readOnly]="otp.mobile.verified" />
+            <button type="button" class="otp-btn" id="sendMobileOtp" *ngIf="!otp.mobile.verified" [disabled]="!canSend('mobile')" (click)="sendOtp('mobile')">{{ sendLabel('mobile') }}</button>
+            <button type="button" class="change-btn" id="changeMobile" *ngIf="otp.mobile.verified" (click)="changeTarget('mobile')">Change</button>
+          </div>
+          <div class="auth-error" id="mobileNumberError" *ngIf="isInvalid('mobileNumber')">
+            <span *ngIf="f['mobileNumber'].errors?.['required']">Mobile number is required</span>
+            <span *ngIf="!f['mobileNumber'].errors?.['required'] && f['mobileNumber'].errors?.['pattern']">Mobile number must be 10 digits</span>
+          </div>
+
+          <div class="otp-box" id="mobileOtpBox" *ngIf="otp.mobile.sent && !otp.mobile.verified">
+            <input type="text" id="mobileOtp" class="otp-input" placeholder="Enter 6 digit OTP" maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+                   [(ngModel)]="otp.mobile.code" [ngModelOptions]="{ standalone: true }" (keyup.enter)="verifyOtp('mobile')" />
+            <button type="button" class="otp-btn verify-btn" id="verifyMobileOtp" [disabled]="otp.mobile.verifying || !otpFormatOk('mobile')" (click)="verifyOtp('mobile')">{{ otp.mobile.verifying ? 'Verifying...' : 'Verify' }}</button>
+          </div>
+          <div class="otp-info" id="mobileOtpInfo" *ngIf="otp.mobile.message && !otp.mobile.verified">{{ otp.mobile.message }}</div>
+          <div class="auth-error" id="mobileOtpError" *ngIf="otp.mobile.error">{{ otp.mobile.error }}</div>
+          <div class="verified-text" id="mobileVerified" *ngIf="otp.mobile.verified">✔ Verified</div>
+          <div class="auth-error" id="mobileNotVerified" *ngIf="submitted && f['mobileNumber'].valid && !otp.mobile.verified">Please verify your mobile number with the OTP</div>
+        </div>
+
+        <!-- Password -->
+        <div class="auth-field">
+          <input type="password" id="password" class="auth-input" placeholder="Password" formControlName="password" autocomplete="new-password" />
+          <div class="auth-error" id="passwordError" *ngIf="isInvalid('password')">
+            <span *ngIf="f['password'].errors?.['required']">Password is required</span>
+            <span *ngIf="!f['password'].errors?.['required'] && f['password'].errors?.['pattern']">Password does not meet all the rules below</span>
+          </div>
+          <ul class="pw-rules" id="passwordRules" *ngIf="passwordTyped">
+            <li *ngFor="let rule of passwordRules" [class.met]="ruleMet(rule)">{{ ruleMet(rule) ? '✓' : '○' }} {{ rule.text }}</li>
+          </ul>
+        </div>
+
+        <div class="auth-field">
+          <input type="password" id="confirmPassword" class="auth-input" placeholder="Confirm password" formControlName="confirmPassword" autocomplete="new-password" />
+          <div class="auth-error" id="confirmPasswordError" *ngIf="isInvalid('confirmPassword') || (passwordMismatch && (f['confirmPassword'].touched || submitted))">
+            <span *ngIf="f['confirmPassword'].errors?.['required']">Confirm password is required</span>
+            <span *ngIf="passwordMismatch">Passwords do not match</span>
+          </div>
+        </div>
+
+        <div class="server-error" id="signupError" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+        <button type="submit" class="auth-submit" id="signupButton">Sign Up</button>
+
+        <p class="auth-link">Already have an account? <a routerLink="/login" id="loginLink">Log In</a></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="showSuccessPopup">
+  <div class="modal-box success-box" id="registrationSuccessPopup">
+    <p>Registration Successful!</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-primary" id="goToLogin" (click)="goToLogin()">Log In</button>
+    </div>
+  </div>
+</div>

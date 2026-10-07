@@ -1,0 +1,47 @@
+<nav class="navbar" id="adminnav">
+  <a class="brand" routerLink="/home">DriveU</a>
+
+  <div class="nav-right">
+    <span class="user-chip" id="userInfo">{{ username }} / {{ userRole }}</span>
+
+    <ul class="nav-links">
+      <li><a routerLink="/home" routerLinkActive="active" id="navHome">Home</a></li>
+
+      <li class="dropdown">
+        <span class="nav-label" id="navDrivers" tabindex="0">Drivers</span>
+        <div class="dropdown-menu">
+          <a routerLink="/driver-management" id="navAddDriver">Add Driver</a>
+          <a routerLink="/admin-view-drivers" id="navViewDrivers">View Drivers</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <span class="nav-label" id="navRequests" tabindex="0">Requests</span>
+        <div class="dropdown-menu">
+          <a routerLink="/adminviewrequests" id="navViewRequests">View Requests</a>
+        </div>
+      </li>
+
+      <li class="dropdown">
+        <span class="nav-label" id="navFeedback" tabindex="0">Feedback</span>
+        <div class="dropdown-menu">
+          <a routerLink="/adminviewfeedback" id="navViewFeedback">View Feedback</a>
+        </div>
+      </li>
+
+      <li><a routerLink="/add-admin" routerLinkActive="active" class="nav-btn" id="navAddAdmin">Add Admin</a></li>
+    </ul>
+
+    <button type="button" class="logout-btn" id="logoutButton" (click)="openLogoutPopup()">Logout</button>
+  </div>
+</nav>
+
+<div class="modal-backdrop" *ngIf="showLogoutPopup">
+  <div class="modal-box">
+    <p>Are you sure you want to logout?</p>
+    <div class="modal-actions row">
+      <button type="button" class="btn btn-success" id="confirmLogout" (click)="confirmLogout()">Yes, Logout</button>
+      <button type="button" class="btn btn-danger" id="cancelLogout" (click)="cancelLogout()">Cancel</button>
+    </div>
+  </div>
+</div>

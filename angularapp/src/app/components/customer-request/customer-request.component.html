@@ -1,0 +1,45 @@
+<form class="form-card" id="requestForm" [formGroup]="requestForm" (ngSubmit)="onSubmit()" novalidate>
+  <button type="button" class="back-btn" id="backButton" (click)="goBack()">Back</button>
+  <h2 class="form-title" id="formHeading">{{ isEditMode ? 'Edit Request' : 'New Driver Request' }}</h2>
+
+  <label class="form-label" for="pickupLocation">Pickup Location<span class="req">*</span></label>
+  <input type="text" id="pickupLocation" class="form-control" formControlName="pickupLocation" />
+  <div class="error-text" id="pickupLocationError" *ngIf="showError('pickupLocation')">*Pickup Location is required</div>
+
+  <label class="form-label" for="dropLocation">Drop Location<span class="req">*</span></label>
+  <input type="text" id="dropLocation" class="form-control" formControlName="dropLocation" />
+  <div class="error-text" id="dropLocationError" *ngIf="showError('dropLocation')">*Drop Location is required</div>
+
+  <label class="form-label" for="tripDate">Trip Date<span class="req">*</span></label>
+  <input type="date" id="tripDate" class="form-control" formControlName="tripDate" [min]="isEditMode ? '' : minDate" />
+  <div class="error-text" id="tripDateError" *ngIf="showError('tripDate')">
+    <span *ngIf="f['tripDate'].errors?.['required']">*Trip Date is required</span>
+    <span *ngIf="f['tripDate'].errors?.['pastDate']">*Trip Date cannot be in the past</span>
+  </div>
+
+  <label class="form-label" for="timeSlot">Time Slot<span class="req">*</span></label>
+  <input type="time" id="timeSlot" class="form-control" formControlName="timeSlot" />
+  <div class="error-text" id="timeSlotError" *ngIf="showError('timeSlot')">*Time Slot is required</div>
+
+  <label class="form-label" for="estimatedDuration">Estimated Duration<span class="req">*</span></label>
+  <input type="text" id="estimatedDuration" class="form-control" formControlName="estimatedDuration" placeholder="e.g. 3 hours" />
+  <div class="error-text" id="estimatedDurationError" *ngIf="showError('estimatedDuration')">*Estimated Duration is required</div>
+
+  <label class="form-label" for="comments">Comments</label>
+  <textarea id="comments" class="form-control" rows="3" formControlName="comments"></textarea>
+
+  <div class="form-error" id="formError" *ngIf="formError">{{ formError }}</div>
+
+  <div class="submit-row">
+    <button type="submit" class="btn btn-primary" id="submitButton">{{ isEditMode ? 'Update Request' : 'Submit Request' }}</button>
+  </div>
+</form>
+
+<div class="modal-backdrop" *ngIf="showSuccessPopup">
+  <div class="modal-box success-box" id="successPopup">
+    <p>{{ successMessage }}</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-primary" id="successOk" (click)="closeSuccessPopup()">Ok</button>
+    </div>
+  </div>
+</div>

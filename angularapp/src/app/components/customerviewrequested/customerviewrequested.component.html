@@ -1,0 +1,97 @@
+<div class="page-container narrow">
+  <div class="page-card" id="myRequestsCard">
+    <h2 class="page-title steel" id="myRequestsHeading">My Requests</h2>
+    <div class="title-line"></div>
+
+    <div class="search-row">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search by Driver Name..." [(ngModel)]="searchText" />
+    </div>
+
+    <div class="request-tabs" role="tablist" aria-label="Request status">
+      <button type="button" role="tab" [attr.aria-selected]="activeTab === 'ongoing'" (click)="activeTab = 'ongoing'">Ongoing</button>
+      <button type="button" role="tab" [attr.aria-selected]="activeTab === 'scheduled'" (click)="activeTab = 'scheduled'">Scheduled</button>
+      <button type="button" role="tab" [attr.aria-selected]="activeTab === 'completed'" (click)="activeTab = 'completed'">Completed</button>
+    </div>
+
+    <div class="request-skeletons" *ngIf="loading" aria-label="Loading requests">
+      <div class="request-skeleton" *ngFor="let item of [1, 2, 3]"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="empty-text" id="noDataMessage" *ngIf="!loading && tabRequests.length === 0">No {{ activeTab }} requests found.</div>
+
+    <div class="cards" *ngIf="!loading && tabRequests.length > 0">
+      <div class="request-card" *ngFor="let request of tabRequests" [attr.id]="'request-' + request.driverRequestId">
+        <div class="card-main">
+          <img class="avatar" [src]="getDriverImage(request.driver?.image)" (error)="useDefaultAvatar($event)" alt="Driver" />
+          <div class="info">
+            <h3>{{ request.driver?.driverName }}</h3>
+            <p><strong>Vehicle Type:</strong> {{ request.driver?.vehicleType }}</p>
+            <p><strong>Pickup:</strong> {{ request.pickupLocation }}</p>
+            <p><strong>Drop:</strong> {{ request.dropLocation }}</p>
+            <p><strong>Trip Date:</strong> {{ toDisplayDate(request.tripDate) }}</p>
+            <p><strong>Status:</strong> <span class="status" [ngClass]="'s-' + request.status.split(' ').join('').toLowerCase()">{{ request.status }}</span></p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-primary btn-pill" [id]="'showMore-' + request.driverRequestId" (click)="showMore(request)">Show More</button>
+          <button type="button" class="btn btn-success btn-pill" [id]="'edit-' + request.driverRequestId" [disabled]="!isPending(request)" (click)="editRequest(request)">Edit</button>
+          <button type="button" class="btn btn-danger btn-pill" [id]="'delete-' + request.driverRequestId" [disabled]="!canCancel(request)" (click)="cancelError = ''; askDelete(request)">Cancel</button>
+          <button type="button" class="btn btn-warning btn-pill" [id]="'tripEnd-' + request.driverRequestId" [disabled]="!canEndTrip(request)" (click)="endTrip(request)">Trip End</button>
+          <button type="button" class="btn btn-primary btn-pill" [id]="'fetchPay-' + request.driverRequestId" [disabled]="!canFetchPayAmount(request)" (click)="fetchPayAmount(request)">Fetch Pay Amount</button>
+          <button type="button" class="btn btn-info btn-pill" [id]="'writeReview-' + request.driverRequestId" [disabled]="!canFetchPayAmount(request)" (click)="writeReview(request)">Write a Review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Request details -->
+<div class="modal-backdrop" *ngIf="showDetailsModal && selectedRequest">
+  <div class="modal-box detail-box" id="detailsModal">
+    <button type="button" class="modal-close" id="closeDetails" (click)="closeDetails()">X</button>
+    <h3>Request Details</h3>
+    <p><strong>Driver Name:</strong> {{ selectedRequest.driver?.driverName }}</p>
+    <p><strong>Contact Number:</strong> {{ selectedRequest.driver?.contactNumber }}</p>
+    <p><strong>Pickup Location:</strong> {{ selectedRequest.pickupLocation }}</p>
+    <p><strong>Drop Location:</strong> {{ selectedRequest.dropLocation }}</p>
+    <p><strong>Request Date:</strong> {{ toDisplayDate(selectedRequest.requestDate) }}</p>
+    <p><strong>Trip Date:</strong> {{ toDisplayDate(selectedRequest.tripDate) }}</p>
+    <p><strong>Time Slot:</strong> {{ toTimeString(selectedRequest.timeSlot) }}</p>
+    <p><strong>Estimated Duration:</strong> {{ selectedRequest.estimatedDuration }}</p>
+    <p><strong>Status:</strong> {{ selectedRequest.status }}</p>
+    <p><strong>Comments:</strong> {{ selectedRequest.comments || '-' }}</p>
+  </div>
+</div>
+
+<!-- Delete confirmation -->
+<div class="modal-backdrop" *ngIf="showDeleteModal">
+  <div class="modal-box" id="deleteModal">
+    <p>Are you sure you want to cancel this request?</p>
+    <p class="cancel-error" *ngIf="cancelError" role="alert">{{ cancelError }}</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-danger" id="confirmDelete" (click)="confirmDelete()">Yes, Cancel</button>
+      <button type="button" class="btn btn-secondary" id="cancelDelete" (click)="cancelDelete()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Payment details -->
+<div class="modal-backdrop" *ngIf="showPayModal && selectedRequest">
+  <div class="modal-box detail-box" id="payModal">
+    <button type="button" class="modal-close" id="closePayModal" (click)="closePayModal()">X</button>
+    <div class="pay-loading" *ngIf="payLoading">
+      <div class="spinner"></div>
+      <p>Calculating your fare...</p>
+    </div>
+    <ng-container *ngIf="!payLoading">
+      <h3>Trip Summary</h3>
+      <p><strong>Travel Charge:</strong> &#8377;{{ selectedRequest.paymentAmount }}</p>
+      <p><strong>Trip Duration:</strong> {{ selectedRequest.actualDuration }}</p>
+      <p><strong>Dropped At:</strong> {{ toDisplayDate(selectedRequest.actualDropDate) }} {{ toTimeString(selectedRequest.actualDropTime) }}</p>
+      <p><strong>Drop Location:</strong> {{ selectedRequest.dropLocation }}</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="skipNow" (click)="closePayModal()">Skip Now</button>
+      </div>
+    </ng-container>
+  </div>
+</div>

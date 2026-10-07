@@ -1,0 +1,4 @@
+.stars { display: flex; gap: 4px; margin-bottom: 4px; }
+.star { background: none; border: none; padding: 0 2px; font-size: 28px; line-height: 1; color: #c9ced3; cursor: pointer; }
+.star.on { color: #f5b301; }
+.star:hover { color: #e0a000; }

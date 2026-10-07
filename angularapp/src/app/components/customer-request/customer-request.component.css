@@ -1,0 +1,2 @@
+/* The form card, labels, inputs and modal are styled by the shared styles in styles.css. */
+input[type='date'].form-control, input[type='time'].form-control { min-height: 40px; }

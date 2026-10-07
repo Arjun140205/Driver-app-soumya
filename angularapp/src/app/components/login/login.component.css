@@ -1,0 +1,2 @@
+/* Layout of the two-panel auth card is shared with the signup page (see styles.css). */
+:host { display: block; }

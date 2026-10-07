@@ -1,0 +1,13 @@
+.page-container.narrow { max-width: 920px; }
+.cards { display: flex; flex-wrap: wrap; gap: 16px; }
+.feedback-card { display: flex; flex-direction: column; width: calc(50% - 8px); min-width: 280px; padding: 14px 14px 0; background: #fff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+.card-head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #666; }
+.category { font-weight: 700; color: #1d5f8a; }
+.rating { margin: 6px 0; font-size: 18px; letter-spacing: 2px; color: #f5b301; }
+.text { flex: 1; margin: 0 0 10px; font-size: 13.5px; color: #333; word-break: break-word; }
+.ai-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.card-footer { display: flex; justify-content: center; gap: 8px; margin: 0 -14px; padding: 10px; background: #f3f5f7; border-radius: 0 0 6px 6px; }
+@media (max-width: 760px) { .feedback-card { width: 100%; } }
+.badge { display: inline-block; padding: 3px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; color: #fff; }
+.badge.positive { background: #2fa84f; } .badge.neutral { background: #8a8f98; } .badge.negative { background: #d9363e; }
+.tag { padding: 2px 8px; border-radius: 999px; background: #ece8fb; color: #5a45c8; font-size: 10px; }

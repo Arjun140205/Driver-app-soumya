@@ -1,0 +1,26 @@
+<nav class="navbar" id="customernav">
+  <a class="brand" routerLink="/home">DriveU</a>
+
+  <div class="nav-right">
+    <span class="user-chip" id="userInfo">{{ username }} / {{ userRole }}</span>
+
+    <ul class="nav-links">
+      <li><a routerLink="/home" routerLinkActive="active" id="navHome">Home</a></li>
+      <li><a routerLink="/customerviewdriver" routerLinkActive="active" id="navAvailableDrivers">Available Drivers</a></li>
+      <li><a routerLink="/customerviewrequested" routerLinkActive="active" id="navMyRequests">My Requests</a></li>
+      <li><a routerLink="/customerviewfeedback" routerLinkActive="active" id="navFeedback">Feedback</a></li>
+    </ul>
+
+    <button type="button" class="logout-btn" id="logoutButton" (click)="openLogoutPopup()">Logout</button>
+  </div>
+</nav>
+
+<div class="modal-backdrop" *ngIf="showLogoutPopup">
+  <div class="modal-box">
+    <p>Are you sure you want to logout?</p>
+    <div class="modal-actions row">
+      <button type="button" class="btn btn-success" id="confirmLogout" (click)="confirmLogout()">Yes, Logout</button>
+      <button type="button" class="btn btn-danger" id="cancelLogout" (click)="cancelLogout()">Cancel</button>
+    </div>
+  </div>
+</div>
